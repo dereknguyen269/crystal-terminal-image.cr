@@ -1,0 +1,6 @@
+version: 1.0
+shards:
+  magickwand-crystal:
+    github: blocknotes/magickwand-crystal
+    version: 0.2.4
+
