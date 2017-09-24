@@ -30,7 +30,16 @@ def rgb(r, g, b)
 end
 
 def code_for_colour(colour)
-  COLORS.index(colour) || 0
+  if COLORS.includes?(colour)
+    return COLORS.index(colour)
+  end
+  0
+end
+
+BLOCK = "\x1b[38;5;%dm\x1b[38;5;%dm"
+
+def get_block(bgcolor, fgcolor=0, width=5)
+  return BLOCK % [bgcolor, fgcolor]
 end
 
 lower_pixel = LibMagick.newPixelWand()
@@ -45,13 +54,11 @@ upper_pixel = LibMagick.newPixelWand()
       LibMagick.magickGetImagePixelColor(wand, j, i+1, lower_pixel)
       lower_code = code_for_pixel(lower_pixel)
     end
-    # printf("\x1b[48;5;%dm", upper_code)
-    printf("\x1b[38;5;%dm", lower_code)
+    printf get_block(lower_code, upper_code)
     print "•"
     print "\n" if j == width
   end
 end
-
 # End
 LibMagick.destroyMagickWand wand
 LibMagick.magickWandTerminus
